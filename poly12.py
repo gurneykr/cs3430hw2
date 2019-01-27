@@ -25,6 +25,7 @@ def find_poly_1_zeros(expr):
     return result
 
 def find_poly_2_zeros(expr):
+
     a = expr.get_elt1().get_elt1().get_mult1().get_val()
     b = expr.get_elt1().get_elt2().get_mult1().get_val()
     c = expr.get_elt2().get_val()

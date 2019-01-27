@@ -118,6 +118,10 @@ def prod_tof(expr):
             def f(x):
                 return m1.get_val()*plus_tof(m2)(x)
             return f
+        elif isinstance(m2, var):
+            def f(x):
+                return m1.get_val()*x
+            return f
     elif isinstance(m1, prod):
         if isinstance(m2, const):
             def f(x):
@@ -134,6 +138,10 @@ def prod_tof(expr):
         elif isinstance(m2, plus):
             def f(x):
                 return prod_tof(m1)(x)*plus_tof(m2)(x)
+            return f
+        elif isinstance(m2, var):
+            def f(x):
+                return prod_tof(m1)(x)*x
             return f
     elif isinstance(m1, pwr):
         if isinstance(m2, const):
@@ -152,23 +160,30 @@ def prod_tof(expr):
             def f(x):
                 return pwr_tof(m1)(x)*plus_tof(m2)(x)
             return f
+        elif isinstance(m2, var):
+            def f(x):
+                return pwr_tof(m1)(x)*x
+            return f
     elif isinstance(m1, plus):
         if isinstance(m2, const):
             def f(x):
-                return plus_tof(m1)(x)*m2.get_val()
+                return plus_tof(m1)(x) + m2.get_val()
             return f
         elif isinstance(m2, prod):
             def f(x):
-                return plus_tof(m1)(x)*prod_tof(m2)(x)
+                return plus_tof(m1)(x) + prod_tof(m2)(x)
             return f
         elif isinstance(m2, pwr):
             def f(x):
-                return plus_tof(m1)(x)*pwr_tof(m2)(x)
+                return plus_tof(m1)(x) + pwr_tof(m2)(x)
             return f
         elif isinstance(m2, plus):
             def f(x):
-                return plus_tof(m1)(x)*plus_tof(m2)(x)
+                return plus_tof(m1)(x) + plus_tof(m2)(x)
             return f
+        elif isinstance(m2, var):
+            def f(x):
+                return plus_tof(m1)(x) + x
 def plus_tof(expr):
     assert isinstance(expr, plus)
     elt1 = expr.get_elt1()
