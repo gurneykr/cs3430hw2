@@ -196,7 +196,7 @@ def plus_tof(expr):
             return f
         elif isinstance(elt2, prod):
             def f(x):
-                return elt2.get_val() + prod_tof(elt2)(x)
+                return elt1.get_val() + prod_tof(elt2)(x)
             return f
         elif isinstance(elt2, pwr):
             def f(x):
