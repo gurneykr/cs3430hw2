@@ -11,47 +11,42 @@ from const import const
 from pwr import pwr
 from prod import prod
 from plus import plus
-from poly12 import find_poly_1_zeros
-from poly12 import find_poly_2_zeros
 from tof import tof
-from point2d import point2d
 from deriv import deriv
 from maker import make_const, make_prod, make_pwr, make_plus
 
-def findDegree(expr):#return a 2 or 1 for its degree
-    degreeExpr = make_const(1.0)
-    try:
-        if isinstance(expr, plus):
-            if isinstance(expr.get_elt1(), plus):#2x^2 + x^1 +4
-                if isinstance(expr.get_elt1().get_elt1(), prod):#3x^2
-                    degreeExpr = expr.get_elt1().get_elt1().get_mult2().get_deg()
-                elif isinstance(expr.get_elt1().get_elt1(), pwr):#x^2
-                    degreeExpr = expr.get_elt1().get_elt1().get_deg()
-                else:
-                    raise Exception("Unexpected expression found in 1: ", type(expr.get_elt1().get_elt1()))
-            elif isinstance(expr.get_elt1(), prod):#2x^1 + 3
-                degreeExpr = expr.get_elt1().get_mult2().get_deg()
-            else:
-                raise Exception("Unexpected expression found in 2: ", type(expr.get_elt1()))
-        else:
-            raise Exception("Initial expression is not a plus: ", type(expr))
-    except:
-        print("error: ", type(expr) )
+def findDegree(expr):
+    return evalExpr(expr)
 
-    degreeFn = tof(degreeExpr)
-    degreeVal = degreeFn(0)
-    return degreeVal
+def evalExpr(expr):
+    if isinstance(expr, plus):
+        results = evalExpr(expr.get_elt1())
+        if results > -1:
+            return results
 
-    #((((0.3333333333333333*(x^2.0))+(-2.0*(x^1.0)))+1.0)
-    #(-2.0*(x^1.0)))+1.0)
+        results = evalExpr(expr.get_elt2())
+        if results >= 0:
+            return results
+    elif isinstance(expr, pwr):
+        theFn = tof(expr.get_deg())
+        return theFn(0)
+    elif isinstance(expr, prod):
+        results = evalExpr(expr.get_mult1())
+        if results > -1:
+            return results
+        results = evalExpr(expr.get_mult2())
+        if results > -1:
+            return results
+    elif isinstance(expr, const) or isinstance(expr, var):
+        return -1
+    else:
+        raise Exception('Exception Found: ', type(expr))
 
-    print("function: ", function)
-
+    return -2
 
 def loc_xtrm_1st_drv_test(expr):
     derivativeExpr = deriv(expr)
     derivfun = tof(derivativeExpr)
-    print("f(x)= ", derivativeExpr)
 
     degree = findDegree(derivativeExpr)
 
@@ -66,6 +61,8 @@ def loc_xtrm_2nd_drv_test(expr):
     pass
 
 def test_03():
+    # 1/3x^3 - 2x^2 + 3x + 1
+    # x^2 - 4x + 3     (((((0.3333333333333333*3.0)*(x^(3.0+-1)))+((-2.0*2.0)*(x^(2.0+-1))))+((3.0*1.0)*(x^(1.0+-1))))+0.0)
     f1 = make_prod(make_const(1.0/3.0), make_pwr('x', 3.0))
     f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
     f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
@@ -76,6 +73,15 @@ def test_03():
     xtrma = loc_xtrm_1st_drv_test(poly)
     # for i, j in xtrma:
     #     print(i, str(j))
+
+
+def test_01():
+    # 2x^2 + 3x + 1
+    f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
+    f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
+    f4 = make_plus(f2, f3)
+    poly = make_plus(f4, make_const(1.0))
+    loc_xtrm_1st_drv_test(poly)
 
 if __name__ == '__main__':
     test_03()
