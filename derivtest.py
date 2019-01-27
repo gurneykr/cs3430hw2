@@ -13,8 +13,8 @@ from prod import prod
 from plus import plus
 from tof import tof
 from deriv import deriv
-from maker import make_const, make_prod, make_pwr, make_plus
-from poly12 import find_poly_2_zeros
+from maker import make_const, make_prod, make_pwr, make_plus, make_point2d
+from poly12 import find_poly_2_zeros, find_poly_1_zeros
 
 def findDegree(expr):
     return evalExpr(expr)
@@ -47,44 +47,61 @@ def evalExpr(expr):
 
 def loc_xtrm_1st_drv_test(expr):
     derivativeExpr = deriv(expr)
-    derivfun = tof(derivativeExpr)
+#    derivfun = tof(derivativeExpr)
 
     degree = findDegree(derivativeExpr)
 
     if degree == 2:
-        zeros = find_poly_2_zeros(derivativeExpr)
-        print(zeros)
-        print("it's a second degree polynomial")
+        xvalues = find_poly_2_zeros(derivativeExpr)
+        critical_points = []
+        for x in xvalues:
+            y = tof(expr)(x)
+            critical_points.append(make_point2d(x, y))
+        print(critical_points)
     else:
-        print("it's a first degree polynomial")
-
+        x = find_poly_1_zeros(derivativeExpr)
+        y = tof(expr)(x)
+        print(make_point2d(x, y))
 
 def loc_xtrm_2nd_drv_test(expr):
-    ## your code here
-    pass
+    loc_xtrm_1st_drv_test(deriv(expr))
 
-def test_03():
-    # ((((1/3)*(x^3) +-(2)*(x^2)) + (3)*(x^1)) + 1)
-    f1 = make_prod(make_const(1.0/3.0), make_pwr('x', 3.0))
-    f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
-    f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
+def test_04():
+    f1 = make_prod(make_const(27.0), make_pwr('x', 3.0))
+    f2 = make_prod(make_const(-27.0), make_pwr('x', 2.0))
+    f3 = make_prod(make_const(9.0), make_pwr('x', 1.0))
     f4 = make_plus(f1, f2)
     f5 = make_plus(f4, f3)
-    poly = make_plus(f5, make_const(1.0))
-   # print('f(x) = ', poly)
-    xtrma = loc_xtrm_1st_drv_test(poly)
-    # for i, j in xtrma:
-    #     print(i, str(j))
+    f6 = make_plus(f5, make_const(-1.0))
+    print('f(x) = ', f6)
+    drv = deriv(f6)
+    assert not drv is None
+    print ('f\(x) =', drv)
+    xtrma = loc_xtrm_2nd_drv_test(f6)
+    assert xtrma is None
 
-#
-# def test_01():
-#     # 2x^2 + 3x + 1
+# def test_03():
+#     # ((((1/3)*(x^3) +-(2)*(x^2)) + (3)*(x^1)) + 1)
+#     f1 = make_prod(make_const(1.0/3.0), make_pwr('x', 3.0))
 #     f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
 #     f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
-#     f4 = make_plus(f2, f3)
-#     poly = make_plus(f4, make_const(1.0))
-#     loc_xtrm_1st_drv_test(poly)
+#     f4 = make_plus(f1, f2)
+#     f5 = make_plus(f4, f3)
+#     poly = make_plus(f5, make_const(1.0))
+#    # print('f(x) = ', poly)
+#     xtrma = loc_xtrm_1st_drv_test(poly)
+#     # for i, j in xtrma:
+#     #     print(i, str(j))
+
+
+def test_01():
+    # -2x^2 + 3x + 1
+    f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
+    f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
+    f4 = make_plus(f2, f3)
+    poly = make_plus(f4, make_const(1.0))
+    loc_xtrm_1st_drv_test(poly)
 
 if __name__ == '__main__':
-    test_03()
+    test_04()
 

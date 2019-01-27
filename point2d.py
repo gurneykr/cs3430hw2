@@ -18,4 +18,7 @@ class point2d(object):
         assert not self.__y__ is None
         return '(' + str(self.__x__) + ', ' + str(self.__y__) + ')'
 
-    
+    def __repr__(self):
+        assert not self.__x__ is None
+        assert not self.__y__ is None
+        return '(' + str(self.__x__) + ', ' + str(self.__y__) + ')'
