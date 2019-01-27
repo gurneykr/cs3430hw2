@@ -39,7 +39,9 @@ def pwr_deriv(p):
     d = p.get_deg()
     if isinstance(b, var):
         if isinstance(d, const):
-            return prod(make_const(d.get_val()), pwr(b, make_const(d.get_val()-1)))
+            return prod(d , pwr(b, prod(d, -1)))
+        elif isinstance(d, plus):
+            return prod(d, pwr(b, prod(d ,-1)))
         else:
             raise Exception('pwr_deriv: case 1: ' + str(p))
     if isinstance(b, pwr):  # think this is (x^2 (^3))
@@ -91,12 +93,12 @@ def prod_deriv(p):
                 return const(0)
             else:
                 return prod(m1, deriv(m2))
-        elif isinstance(m2, pwr):  # (1+x)*(2^3)
-            pass
-        elif isinstance(m2, plus):  # (1+x)*(x+3)
-            pass
-        elif isinstance(m2, prod):  # (3+x)*(2x)
-            pass
+        # elif isinstance(m2, pwr):  # (1+x)*(2^3)
+        #     pass
+        # elif isinstance(m2, plus):  # (1+x)*(x+3)
+        #     pass
+        # elif isinstance(m2, prod):  # (3+x)*(2x)
+        #     pass
         else:
             raise Exception('prod_deriv: case 1:' + str(p))
     elif isinstance(m1, pwr):
@@ -105,32 +107,16 @@ def prod_deriv(p):
                 return const(0)
             else:
                 return prod(deriv(m1), m2)
-        elif isinstance(m2, pwr):
-            pass
-        elif isinstance(m2, plus):
-            pass
-        elif isinstance(m2. prod):
-            pass
         else:
             raise Exception('prod_deriv: case 2:' + str(p))
+
     elif isinstance(m1, prod):
         if isinstance(m2, const):#(3x)*4
             if isinstance(deriv(m2), const):
                 return const(0)
             else:
                 return prod(deriv(m1), m2)
-        elif isinstance(m2, pwr):
-            pass
-        elif isinstance(m2, plus):
-            pass
-        elif isinstance(m2, prod):
-            pass
-            # if isinstance(deriv(m2), const):
-            #     return const(0)
-            # else:
-            #     return prod(deriv(m1), m2)
         else:
-            raise Exception('prod_deriv: case 3:' + str(p))
-
+            return prod(m1, deriv(m2))
     else:
        raise Exception('prod_deriv: case 4:' + str(p))
