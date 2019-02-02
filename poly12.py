@@ -117,28 +117,3 @@ def find_poly_2_zeros(expr):
     result2 = topNeg / bottom
 
     return (const(result1), const(result2))
-
-#
-# def test1():
-#     f1 = make_prod(make_const(3.0), make_pwr('x', 1.0))
-#     f2 = make_plus(f1, make_const(100.0))
-#     print(f2)
-#     print(find_poly_1_zeros(f2))
-#
-#
-# def test2():
-#     f0 = make_prod(make_const(0.5), make_pwr('x', 2.0))
-#     f1 = make_prod(make_const(6.0), make_pwr('x', 1.0))
-#     f2 = make_plus(f0, f1)
-#     poly = make_plus(f2, make_const(0.0))
-#     print(poly)
-#     zeros = find_poly_2_zeros(poly)
-#     print(zeros)
-#     # for c in zeros: print
-#     # c
-#     # pf = tof(poly)
-#     # for c in zeros: assert abs(pf(c.get_val()) - 0.0) <= 0.0001
-
-#
-# if __name__ == '__main__':
-#     #test2()
