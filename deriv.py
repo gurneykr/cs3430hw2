@@ -31,7 +31,11 @@ def const_deriv(c):
     return const(val=0.0)
 
 def plus_deriv(s):
-    return plus(deriv(s.get_elt1()), deriv(s.get_elt2()))
+    if isinstance(s.get_elt2(), const):
+        # Simplified - if the second argument is a constant, then it becomes zero and there is no need to add it.
+        return deriv(s.get_elt1())
+    else:
+        return plus(deriv(s.get_elt1()), deriv(s.get_elt2()))
 
 def pwr_deriv(p):
     assert isinstance(p, pwr)
@@ -71,10 +75,13 @@ def prod_deriv(p):
             return const(0)
         elif isinstance(m2, pwr):  # 6*(x^3)=> 6*3*(x^(3-1))
             # get 6 * 3
-            alt1 = prod(m1, m2.get_deg())
+            simplifiedAlt1 = const(m1.get_val() * m2.get_deg().get_val())
+
+            # alt1 = prod(m1, m2.get_deg())
             # get x^3-1
-            alt2 = pwr(m2.get_base(), plus(m2.get_deg(), const(-1)))
-            return prod(alt1, alt2)
+            simplifiedExp = const(m2.get_deg().get_val() - 1)
+            alt2 = pwr(m2.get_base(), simplifiedExp)
+            return prod(simplifiedAlt1, alt2)
         elif isinstance(m2, plus):  # 3*(x+1)
             if isinstance(deriv(m2), const):
                 return const(0)
