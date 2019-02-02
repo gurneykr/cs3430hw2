@@ -291,27 +291,27 @@ class Assign02UnitTests(unittest.TestCase):
     #         assert abs(pf(z.get_val()) - 0.0) <= err
     #     print('Assign 02: Problem 01: Unit Test 09: pass')
 
-    def test_assgn_02_ut_11(self):
-        print('\n***** Assign 02: Problem 02: Unit Test 011 *****')
-        f1 = make_prod(make_const(1.0/3.0), make_pwr('x', 3.0))
-        f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
-        f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
-        f4 = make_plus(f1, f2)
-        f5 = make_plus(f4, f3)
-        poly = make_plus(f5, make_const(1.0))
-        print(poly)
-        xtrma = loc_xtrm_1st_drv_test(poly)
-        assert len(xtrma) == 2
-        err = 0.0001
-        for i, j in xtrma:
-            print(i, str(j))
-            if i == 'max':
-                assert abs(j.get_x().get_val() - 1.0) <= err
-                assert abs(j.get_y().get_val() - 2.33333333333) <= err
-            if i == 'min':
-                assert abs(j.get_x().get_val() - 3.0) <= err
-                assert abs(j.get_y().get_val() - 1.0) <= err
-        print('Assign 02: Problem 02: Unit Test 01: pass')
+    # def test_assgn_02_ut_11(self):
+    #     print('\n***** Assign 02: Problem 02: Unit Test 011 *****')
+    #     f1 = make_prod(make_const(1.0/3.0), make_pwr('x', 3.0))
+    #     f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
+    #     f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
+    #     f4 = make_plus(f1, f2)
+    #     f5 = make_plus(f4, f3)
+    #     poly = make_plus(f5, make_const(1.0))
+    #     print(poly)
+    #     xtrma = loc_xtrm_1st_drv_test(poly)
+    #     assert len(xtrma) == 2
+    #     err = 0.0001
+    #     for i, j in xtrma:
+    #         print(i, str(j))
+    #         if i == 'max':
+    #             assert abs(j.get_x().get_val() - 1.0) <= err
+    #             assert abs(j.get_y().get_val() - 2.33333333333) <= err
+    #         if i == 'min':
+    #             assert abs(j.get_x().get_val() - 3.0) <= err
+    #             assert abs(j.get_y().get_val() - 1.0) <= err
+    #     print('Assign 02: Problem 02: Unit Test 01: pass')
 
     # def test_assgn_02_ut_12(self):
     #     print('\n***** Assign 02: Problem 02: Unit Test 02 *****')
@@ -325,24 +325,24 @@ class Assign02UnitTests(unittest.TestCase):
     #     xtrma = loc_xtrm_1st_drv_test(f6)
     #     assert xtrma is None
     #     print('Assign 02: Problem 02: Unit Test 02: pass')
-    #
-    # def test_assgn_02_ut_13(self):
-    #     print('\n***** Assign 02: Problem 02: Unit Test 03 *****')
-    #     f1 = make_prod(make_const(1.0/4.0), make_pwr('x', 2.0))
-    #     f2 = make_prod(make_const(-1.0), make_pwr('x', 1.0))
-    #     f3 = make_plus(f1, f2)
-    #     f4 = make_plus(f3, make_const(2.0))
-    #     print(f4)
-    #     xtrma = loc_xtrm_2nd_drv_test(f4)
-    #     assert len(xtrma) == 1
-    #     err = 0.0001
-    #     for i, j in xtrma:
-    #         print(i, str(j))
-    #         if i == 'min':
-    #             assert abs(j.get_x().get_val() - 2.0) <= err
-    #             assert abs(j.get_y().get_val() - 1.0) <= err
-    #     print('Assign 02: Problem 02: Unit Test 03: pass')
-    #
+
+    def test_assgn_02_ut_13(self):
+        print('\n***** Assign 02: Problem 02: Unit Test 03 *****')
+        f1 = make_prod(make_const(1.0/4.0), make_pwr('x', 2.0))
+        f2 = make_prod(make_const(-1.0), make_pwr('x', 1.0))
+        f3 = make_plus(f1, f2)
+        f4 = make_plus(f3, make_const(2.0))
+        print(f4)
+        xtrma = loc_xtrm_2nd_drv_test(f4)
+        assert len(xtrma) == 1
+        err = 0.0001
+        for i, j in xtrma:
+            print(i, str(j))
+            if i == 'min':
+                assert abs(j.get_x().get_val() - 2.0) <= err
+                assert abs(j.get_y().get_val() - 1.0) <= err
+        print('Assign 02: Problem 02: Unit Test 03: pass')
+
     # def test_assgn_02_ut_14(self):
     #     print('\n***** Assign 02: Problem 02: Unit Test 04 *****')
     #     f1 = make_pwr('x', 3.0)

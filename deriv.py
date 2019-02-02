@@ -43,7 +43,7 @@ def pwr_deriv(p):
     d = p.get_deg()
     if isinstance(b, var):
         if isinstance(d, const):
-            return prod(d , pwr(b, prod(d, const(-1))))
+            return prod(d, pwr(b, prod(d, const(-1))))
         elif isinstance(d, plus):
             return prod(d, pwr(b, prod(d ,const(-1))))
         else:
@@ -74,14 +74,18 @@ def prod_deriv(p):
         if isinstance(m2, const):
             return const(0)
         elif isinstance(m2, pwr):  # 6*(x^3)=> 6*3*(x^(3-1))
-            # get 6 * 3
-            simplifiedAlt1 = const(m1.get_val() * m2.get_deg().get_val())
+            # 3x^1  becomes (1*3)x^0 => simplified is 3
+            if isinstance(m2.get_deg(), const) and m2.get_deg().get_val() == 1:
+                return m1
+            else:
+                # get 6 * 3
+                simplifiedAlt1 = const(m1.get_val() * m2.get_deg().get_val())
 
-            # alt1 = prod(m1, m2.get_deg())
-            # get x^3-1
-            simplifiedExp = const(m2.get_deg().get_val() - 1)
-            alt2 = pwr(m2.get_base(), simplifiedExp)
-            return prod(simplifiedAlt1, alt2)
+                # alt1 = prod(m1, m2.get_deg())
+                # get x^3-1
+                simplifiedExp = const(m2.get_deg().get_val() - 1)
+                alt2 = pwr(m2.get_base(), simplifiedExp)
+                return prod(simplifiedAlt1, alt2)
         elif isinstance(m2, plus):  # 3*(x+1)
             if isinstance(deriv(m2), const):
                 return const(0)

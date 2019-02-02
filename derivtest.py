@@ -59,11 +59,11 @@ def loc_xtrm_1st_drv_test(expr):
             y = exprFn(x.get_val())
 
             critical_points.append(make_point2d(x.get_val(), y))
-        print(critical_points)
-    else:
+    elif degree == 1:
         x = find_poly_1_zeros(derivativeExpr)
         y = exprFn(x)
-        print(make_point2d(x, y))
+    else:
+        raise Exception("Not a first or second degree polynomial degree=", degree)
 
     maxima = None
     minima = None
@@ -78,13 +78,19 @@ def loc_xtrm_1st_drv_test(expr):
             y = exprFn(x)
             maxima = make_point2d(x, y)
 
+    if not maxima and not minima:
+        return None
+    else:
+        results = []
+        if maxima:
+            results.append(("max", maxima))
+        if minima:
+            results.append(("min", minima))
 
-
-    results = [("max", maxima), ("min", minima)]
     return results
 
 def loc_xtrm_2nd_drv_test(expr):
-    loc_xtrm_1st_drv_test(deriv(expr))
+    return loc_xtrm_1st_drv_test(deriv(expr))
 
 def test_04():
     f1 = make_prod(make_const(27.0), make_pwr('x', 3.0))
@@ -93,10 +99,8 @@ def test_04():
     f4 = make_plus(f1, f2)
     f5 = make_plus(f4, f3)
     f6 = make_plus(f5, make_const(-1.0))
-    print('f(x) = ', f6)
     drv = deriv(f6)
     assert not drv is None
-    print ('f\(x) =', drv)
     xtrma = loc_xtrm_2nd_drv_test(f6)
     assert xtrma is None
 
