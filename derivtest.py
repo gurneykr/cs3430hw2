@@ -39,7 +39,7 @@ def evalExpr(expr):
         if results > -1:
             return results
     elif isinstance(expr, const):
-        return 0
+        return -1
     else:
         raise Exception('Exception Found: ', type(expr))
 
@@ -52,16 +52,19 @@ def loc_xtrm_1st_drv_test(expr):
 
     degree = findDegree(derivativeExpr)
 
+    critical_points = []
+
     if degree == 2:
         xvalues = find_poly_2_zeros(derivativeExpr)
-        critical_points = []
         for x in xvalues:
             y = exprFn(x.get_val())
 
             critical_points.append(make_point2d(x.get_val(), y))
     elif degree == 1:
         x = find_poly_1_zeros(derivativeExpr)
-        y = exprFn(x)
+        y = exprFn(x.get_val())
+
+        critical_points.append(make_point2d(x.get_val(), y))
     elif degree == 0:
         # The derivative is just a constant so all values will be just the constant
         # f` = 5
@@ -94,7 +97,26 @@ def loc_xtrm_1st_drv_test(expr):
     return results
 
 def loc_xtrm_2nd_drv_test(expr):
-    return loc_xtrm_1st_drv_test(deriv(expr))
+    # Get the extrema from the first derivative
+    first_xtrema = loc_xtrm_1st_drv_test(expr)
+
+    # Take the second derivative, put those extrema values in
+    expr2 = deriv(deriv(expr))
+    fn2 = tof(expr2)
+
+    results = []
+    for ex in first_xtrema:
+        value = fn2(ex[1].get_x().get_val())
+
+        if value < 0:  # If the results are negative, then we have a local max
+            point = make_point2d(ex[1].get_x().get_val(), ex[1].get_y().get_val())
+            results.append(("max", point))
+
+        else:  # If the results are positive, then we have a local min
+            point = make_point2d(ex[1].get_x().get_val(), ex[1].get_y().get_val())
+            results.append(("min", point))
+
+    return results
 
 def test_04():
     f1 = make_prod(make_const(27.0), make_pwr('x', 3.0))

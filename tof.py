@@ -46,6 +46,9 @@ def pwr_tof(expr):
     if isinstance(f1, var) and not isinstance(f2, var):
         def f(x):
             temp = tof(f2)(x)
+            print("type(x)=", type(x), " type(tof(f2)(x))=", type(temp))
+            if type(x) == const:
+                print("found it")
             return math.pow(x, tof(f2)(x))
         return f
     elif isinstance(f1, var) and isinstance(f2, var):
