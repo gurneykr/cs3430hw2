@@ -38,8 +38,8 @@ def evalExpr(expr):
         results = evalExpr(expr.get_mult2())
         if results > -1:
             return results
-    elif isinstance(expr, const) or isinstance(expr, var):
-        return -1
+    elif isinstance(expr, const):
+        return 0
     else:
         raise Exception('Exception Found: ', type(expr))
 
@@ -62,6 +62,10 @@ def loc_xtrm_1st_drv_test(expr):
     elif degree == 1:
         x = find_poly_1_zeros(derivativeExpr)
         y = exprFn(x)
+    elif degree == 0:
+        # The derivative is just a constant so all values will be just the constant
+        # f` = 5
+        x = derivativeExpr.get_val();
     else:
         raise Exception("Not a first or second degree polynomial degree=", degree)
 
