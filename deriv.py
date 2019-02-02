@@ -43,9 +43,9 @@ def pwr_deriv(p):
     d = p.get_deg()
     if isinstance(b, var):
         if isinstance(d, const):
-            return prod(d, pwr(b, prod(d, const(-1))))
+            return prod(d, pwr(b, const(d.get_val()-1)))
         elif isinstance(d, plus):
-            return prod(d, pwr(b, prod(d ,const(-1))))
+            return prod(d, pwr(b, const(d.get_val()-1)))
         else:
             raise Exception('pwr_deriv: case 1: ' + str(p))
     if isinstance(b, pwr):  # think this is (x^2 (^3))

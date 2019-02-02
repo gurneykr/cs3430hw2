@@ -326,30 +326,36 @@ class Assign02UnitTests(unittest.TestCase):
     #     assert xtrma is None
     #     print('Assign 02: Problem 02: Unit Test 02: pass')
 
-    def test_assgn_02_ut_13(self):
-        print('\n***** Assign 02: Problem 02: Unit Test 03 *****')
-        f1 = make_prod(make_const(1.0/4.0), make_pwr('x', 2.0))
-        f2 = make_prod(make_const(-1.0), make_pwr('x', 1.0))
-        f3 = make_plus(f1, f2)
-        f4 = make_plus(f3, make_const(2.0))
-        print(f4)
-        xtrma = loc_xtrm_2nd_drv_test(f4)
-        assert len(xtrma) == 1
-        err = 0.0001
-        for i, j in xtrma:
-            print(i, str(j))
-            if i == 'min':
-                assert abs(j.get_x().get_val() - 2.0) <= err
-                assert abs(j.get_y().get_val() - 1.0) <= err
-        print('Assign 02: Problem 02: Unit Test 03: pass')
+    # def test_assgn_02_ut_13(self):
+    #     print('\n***** Assign 02: Problem 02: Unit Test 013 *****')
+    #     f1 = make_prod(make_const(1.0/4.0), make_pwr('x', 2.0))
+    #     f2 = make_prod(make_const(-1.0), make_pwr('x', 1.0))
+    #     f3 = make_plus(f1, f2)
+    #     f4 = make_plus(f3, make_const(2.0))
+    #     print(f4)
+    #     xtrma = loc_xtrm_2nd_drv_test(f4)
+    #     assert len(xtrma) == 1
+    #     err = 0.0001
+    #     for i, j in xtrma:
+    #         print(i, str(j))
+    #         if i == 'min':
+    #             assert abs(j.get_x().get_val() - 2.0) <= err
+    #             assert abs(j.get_y().get_val() - 1.0) <= err
+    #     print('Assign 02: Problem 02: Unit Test 03: pass')
 
     # def test_assgn_02_ut_14(self):
     #     print('\n***** Assign 02: Problem 02: Unit Test 04 *****')
     #     f1 = make_pwr('x', 3.0)
     #     f2 = make_prod(make_const(-3.0), make_pwr('x', 2.0))
     #     f3 = make_plus(f1, f2)
+    #     # f4 = make_pwr('x', 0)
     #     f4 = make_plus(f3, make_const(5.0))
+    #     # f1 = make_plus(make_pwr('x', 3.0), make_prod(make_const(-3.0), make_pwr('x', 2.0)))
+    #     # f2 = make_plus(f1, make_prod(make_const(0.0),make_pwr('x', 1.0)))
+    #     # f3 = make_plus(f2, make_const(5.0))
+    #
     #     print(f4)
+    #     print("f'(x)= ",deriv(f4))
     #     xtrma = loc_xtrm_2nd_drv_test(f4)
     #     assert len(xtrma) == 2
     #     err = 0.0001
@@ -362,27 +368,27 @@ class Assign02UnitTests(unittest.TestCase):
     #             assert abs(j.get_x().get_val() - 2.0) <= err
     #             assert abs(j.get_y().get_val() - 1.0) <= err
     #     print('Assign 02: Problem 02: Unit Test 04: pass')
-    #
-    # def test_assgn_02_ut_15(self):
-    #     print('\n***** Assign 02: Problem 02: Unit Test 05 *****')
-    #     f1 = make_pwr('x', 3.0)
-    #     f2 = make_prod(make_const(-27.0), make_pwr('x', 1.0))
-    #     f3 = make_plus(f1, f2)
-    #     f4 = make_plus(f3, make_const(0.0))
-    #     print(f4)
-    #     xtrma = loc_xtrm_2nd_drv_test(f4)
-    #     assert len(xtrma) == 2
-    #     err = 0.0001
-    #     for i, j in xtrma:
-    #         print(i, str(j))
-    #         if i == 'max':
-    #             assert abs(j.get_x().get_val() + 3.0) <= err
-    #             assert abs(j.get_y().get_val() - 54.0) <= err
-    #         if i == 'min':
-    #             assert abs(j.get_x().get_val() - 3.0) <= err
-    #             assert abs(j.get_y().get_val() + 54.0) <= err
-    #     print('Assign 02: Problem 02: Unit Test 04: pass')
-    #
+
+    def test_assgn_02_ut_15(self):
+        print('\n***** Assign 02: Problem 02: Unit Test 05 *****')
+        f1 = make_pwr('x', 3.0)
+        f2 = make_prod(make_const(-27.0), make_pwr('x', 1.0))
+        f3 = make_plus(f1, f2)
+        f4 = make_plus(f3, make_const(0.0))
+        print(f4)
+        xtrma = loc_xtrm_2nd_drv_test(f4)
+        assert len(xtrma) == 2
+        err = 0.0001
+        for i, j in xtrma:
+            print(i, str(j))
+            if i == 'max':
+                assert abs(j.get_x().get_val() + 3.0) <= err
+                assert abs(j.get_y().get_val() - 54.0) <= err
+            if i == 'min':
+                assert abs(j.get_x().get_val() - 3.0) <= err
+                assert abs(j.get_y().get_val() + 54.0) <= err
+        print('Assign 02: Problem 02: Unit Test 04: pass')
+
     # def test_assgn_02_ut_16(self):
     #     print('\n***** Assign 02: Problem 03: Unit Test 01 *****')
     #     f1 = make_pwr('x', 3.0)

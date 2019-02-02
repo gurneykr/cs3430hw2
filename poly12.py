@@ -94,7 +94,7 @@ def find_poly_1_zeros(expr):
 
     evaluate_expression(expr, abc)
     #bx + c => -c/b
-    return const(-abc['c'] / abc['b'])
+    return const(-1 *abc['c'] / abc['b'])
 
 def find_poly_2_zeros(expr):
     abc = {'a': None, 'b': None, 'c': None, 'degrees': -1}
@@ -103,7 +103,7 @@ def find_poly_2_zeros(expr):
 
     a = results['a']
     b = results['b']
-    c = results['c']
+    c = results['c'] or 0.0
 
     top1 = b * (-1)
     top2 = (b * b) - (4 * a * c)
