@@ -14,6 +14,14 @@ from var import var
 from tof import tof
 import math
 
+# x^2 + x^1 -4
+# plus(plus(pwr(var("x"), const(2)), pwr(var("x"), const(1)), const(-4))
+# plus
+#      plus
+#           pwr
+#               var("x")
+#                          const(2)
+
 def evaluate_expression(expr, abc):
 
     # ((((1/3)*3(x^(3-1)) +-(2)*(x^(2-1)) + (3)*(x^(1-1)) + 0)
@@ -22,14 +30,32 @@ def evaluate_expression(expr, abc):
 
     if isinstance(expr, plus):
         # a + b^1
-        evaluate_expression(expr.get_elt1(), abc)
-        results = evaluate_expression(expr.get_elt2(), abc)
-        if results['degrees'] == 1:
+        results = evaluate_expression(expr.get_elt1(), abc)
+        if results['degrees'] == 2:
+            results['a'] = 1
+            results['degrees'] = -1
+        elif results['degrees'] == 1:
             results['b'] = 1
+            results['degrees'] = -1
         elif results['degrees'] == 0:
             results['c'] = 1
-        # else:
-        #     results['c'] = evaluate_expression(expr.get_elt2(), abc)
+            results['degrees'] = -1
+
+        results = evaluate_expression(expr.get_elt2(), abc)  # should be 5
+        if results['degrees'] == 2:
+            results['a'] = 2
+            results['degrees'] = -1
+        elif results['degrees'] == 1:
+            results['b'] = 1
+            results['degrees'] = -1
+        elif results['degrees'] == 0:
+            results['c'] = 1
+            results['degrees'] = -1
+
+        if isinstance(expr.get_elt2(), const):
+            results['c'] = expr.get_elt2().get_val()
+
+        return results
 
     elif isinstance(expr, prod):  # 3 * x^1
         evaluate_expression(expr.get_mult1(), abc)
@@ -45,12 +71,19 @@ def evaluate_expression(expr, abc):
             results['c'] = tof(expr.get_mult1())(0)
             results['degrees'] = -1
 
-    elif isinstance(expr, pwr):
+        return results
+
+    elif isinstance(expr, pwr): # x^1
         if isinstance(expr.get_base(), var):
-            abc['degrees'] = tof(expr.get_deg())(0)
+            abc['degrees'] = tof(expr.get_deg())(0)  # should be a 1
             return abc
         else:
             evaluate_expression(pwr.get_base(), abc)
+
+    # elif isinstance(expr, var): # x
+
+
+
     # elif isinstance(expr, const):
     #     abc['c'] = const
 
@@ -62,7 +95,7 @@ def find_poly_1_zeros(expr):
     evaluate_expression(expr, abc)
     print(abc)
     #bx + c => -c/b
-    return -abc['c'] / abc['b']
+    return const(-abc['c'] / abc['b'])
 
 def find_poly_2_zeros(expr):
     abc = {'a': None, 'b': None, 'c': None, 'degrees': -1}
@@ -85,7 +118,7 @@ def find_poly_2_zeros(expr):
     result1 = topPos / bottom
     result2 = topNeg / bottom
 
-    return (result1, result2)
+    return (const(result1), const(result2))
 
 #
 # def test1():
