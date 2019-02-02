@@ -28,6 +28,8 @@ def evaluate_expression(expr, abc):
             results['b'] = 1
         elif results['degrees'] == 0:
             results['c'] = 1
+        # else:
+        #     results['c'] = evaluate_expression(expr.get_elt2(), abc)
 
     elif isinstance(expr, prod):  # 3 * x^1
         evaluate_expression(expr.get_mult1(), abc)
@@ -49,6 +51,8 @@ def evaluate_expression(expr, abc):
             return abc
         else:
             evaluate_expression(pwr.get_base(), abc)
+    # elif isinstance(expr, const):
+    #     abc['c'] = const
 
     return abc
 
