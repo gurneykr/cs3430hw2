@@ -46,6 +46,7 @@ def evalExpr(expr):
     return -2
 
 def loc_xtrm_1st_drv_test(expr):
+    exprFn = tof(expr)
     derivativeExpr = deriv(expr)
     derivfn = tof(derivativeExpr)
 
@@ -55,13 +56,13 @@ def loc_xtrm_1st_drv_test(expr):
         xvalues = find_poly_2_zeros(derivativeExpr)
         critical_points = []
         for x in xvalues:
-            y = tof(expr)(x.get_val())
+            y = exprFn(x.get_val())
 
             critical_points.append(make_point2d(x.get_val(), y))
         print(critical_points)
     else:
         x = find_poly_1_zeros(derivativeExpr)
-        y = tof(expr)(x)
+        y = exprFn(x)
         print(make_point2d(x, y))
 
     maxima = None
@@ -71,8 +72,10 @@ def loc_xtrm_1st_drv_test(expr):
         less = derivfn(x - 0.5)
         more = derivfn(x + 0.5)
         if less < 0 and more > 0:
+            y = exprFn(x)
             minima = make_point2d(x, y)
         elif less > 0 and more < 0:
+            y = exprFn(x)
             maxima = make_point2d(x, y)
 
 
