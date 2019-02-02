@@ -370,12 +370,13 @@ class Assign02UnitTests(unittest.TestCase):
     #     print('Assign 02: Problem 02: Unit Test 04: pass')
 
     def test_assgn_02_ut_15(self):
-        print('\n***** Assign 02: Problem 02: Unit Test 05 *****')
+        print('\n***** Assign 02: Problem 02: Unit Test 015 *****')
         f1 = make_pwr('x', 3.0)
         f2 = make_prod(make_const(-27.0), make_pwr('x', 1.0))
         f3 = make_plus(f1, f2)
         f4 = make_plus(f3, make_const(0.0))
         print(f4)
+        print("f'(x)= ", deriv(f4))
         xtrma = loc_xtrm_2nd_drv_test(f4)
         assert len(xtrma) == 2
         err = 0.0001

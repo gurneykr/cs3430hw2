@@ -102,7 +102,7 @@ def find_poly_2_zeros(expr):
     results = evaluate_expression(expr, abc)
 
     a = results['a']
-    b = results['b']
+    b = results['b'] or 0.0
     c = results['c'] or 0.0
 
     top1 = b * (-1)
